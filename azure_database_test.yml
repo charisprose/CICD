@@ -1,0 +1,35 @@
+# File: azure-pipelines.yml
+trigger:
+- main
+
+pool:
+     vmImage: 'windows-latest'
+
+jobs:
+- job: Run SQL Test
+  displayName: 'Run SQL Test on MSSQL docker image'
+
+  steps:
+  - task: Docker@2
+    displayName: 'Pull MSSQL docker image'
+    inputs:
+     command:'run'
+    container: 'mcr.microsoft.com/mssql/server:2022-latest'  
+    arguments: '-e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<PassWithFlyerColors>" -p 1433:1433 --name sql-server-container -d'
+  
+  - task: PowerShell@2
+    displayName: Set up database and schedule
+    inputs:
+    targetType: 'inline'
+    script: |
+     $saPassword = "<PassWithFlyerColors>"
+     $serverName = "localhost,[1433]"
+     $connectionString ="Server=$serverName;Database=master;UserId=sa;Password=$saPassword;"
+     $databaseName = "Movies"
+     $schemaName = "Characters"
+     $sqlCommand = "CREATE DATABASE [$databaseName]; CREATE SCHEMA $schemaName;"
+     Invoke-SqlCmd -ConnectionString $connectionString -Query $sqlCommand
+     if($LASTEXITCODE -ne 0){Write-Host "##[task.logissue type=error] SQL command failed!" exit 1} else {Write-Host "Table and schema are created successfully!"}
+    
+
+
