@@ -12,7 +12,7 @@ steps:
       $databaseName = "Movies"      
       $tableName = "characters"
       $schemaName = "dbo"
-      $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=True;IntegratedSecurity=True;Encrypt=false;TrustServerCertificate=true"
+      $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=True;Integrated Security=True;Encrypt=false;TrustServerCertificate=true"
       $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
       Install-Module -Name SqlServer -Force -Scope CurrentUser -SkipPublisherCheck
       Import-Module SqlServer
