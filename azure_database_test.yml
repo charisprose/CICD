@@ -9,10 +9,9 @@ steps:
     script: |
       
       $serverName = "localhost\sqlexpress"
-      $databaseName = "Movies"
-      $schemaName ="dbo"
+      $databaseName = "Movies"      
       $tableName = "characters"
-      $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=SSPI;IntegratedSecurity=True;Encrypt=false;TrustServerCertificate=true"      $schemaName = "Characters"
+      $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=True;IntegratedSecurity=True;Encrypt=false;TrustServerCertificate=true"      $schemaName = "Characters"
       $sqlCommand = "INSERT INTO $schemaName.$tableName(char_id, first_name, last_name)
       VALUES (4, 'Rabeus', 'Hadgrid');"
       $result=Invoke-SqlCmd -ConnectionString $connectionString -Query $sqlCommand
