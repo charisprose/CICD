@@ -13,9 +13,11 @@ steps:
       $tableName = "characters"
       $schemaName = "dbo"
       $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=True;IntegratedSecurity=True;Encrypt=false;TrustServerCertificate=true"
-      VALUES (4, 'Rabeus', 'Hadgrid');"
-      $result=Invoke-SqlCmd -ConnectionString $connectionString -Query $sqlCommand
-      if($LASTEXITCODE -ne 0){Write-Host "##[task.logissue type=error] SQL command failed!" exit 1} else {Write-Host "The record is inserted successfully!"}
-    
-
-
+      $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
+      try {
+        Invoke-SqlCmd -ConnectionString $connectionString -Query $sqlScript
+        Write-Host "Successfully executed script: $scriptName"
+      } catch {
+        Write-Error "Error executing script: $scriptName - $($_.Exception.Message)"
+      }
+      
