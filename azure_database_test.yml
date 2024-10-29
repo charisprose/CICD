@@ -8,11 +8,12 @@ steps:
     targetType: 'inline'
     script: |
       
-      $serverName = "localhost,[1433]"
+      $serverName = "localhost\sqlexpress"
       $databaseName = "Movies"
+      $schemaName ="dbo"
       $tableName = "characters"
       $connectionString ="Server=$serverName;Database=$databaseName;Trusted_Connection=SSPI;IntegratedSecurity=True;Encrypt=false;TrustServerCertificate=true"      $schemaName = "Characters"
-      $sqlCommand = "INSERT INTO $tableName(char_id, first_name, last_name)
+      $sqlCommand = "INSERT INTO $schemaName.$tableName(char_id, first_name, last_name)
       VALUES (4, 'Rabeus', 'Hadgrid');"
       $result=Invoke-SqlCmd -ConnectionString $connectionString -Query $sqlCommand
       if($LASTEXITCODE -ne 0){Write-Host "##[task.logissue type=error] SQL command failed!" exit 1} else {Write-Host "The record is inserted successfully!"}
