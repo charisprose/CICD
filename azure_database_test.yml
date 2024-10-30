@@ -1,0 +1,26 @@
+# File: azure-pipelines.yml
+trigger:
+- main
+pool:
+  vmImage: 'windows-latest'
+steps:
+- task: PowerShell@2
+  displayName: Set up database and schedule
+  inputs:
+    targetType: 'inline'
+    script: |
+      $serverName = "charis-legion-laptop-4E5SMTT2\SQLEXPRESS;initial catalog=master;user id=sa;password=<<YourPassword>>"
+      $databaseName = "Movies"
+      $tableName = "characters"
+      $schemaName = "dbo"
+      $loginName = "sa"
+      $secret ="Watermelon"
+      $connectionString ="Server=$serverName;Database=$databaseName;User Id=$loginName;Password=$secret;Trusted_Connection=SSPI;Integrated Security=True;Encrypt=false;TrustServerCertificate=true"
+      $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
+      try {
+        Invoke-sqlcmd -Query $sqlScript -ConnectionString $connectionString 
+        Write-Host "Successfully executed script: $scriptName"
+      } catch {
+        Write-Error "Error executing script: $scriptName - $($_.Exception.Message)"
+      }
+      
