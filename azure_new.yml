@@ -1,0 +1,8 @@
+- task: SqlAzureDacpacDeployment@1
+  inputs:
+    azureSubscription: $(azure_subscription_1) # Connection to your Azure subscription
+    ServerName: 'charis-legion-laptop-4E5SMTT2\SQLEXPRESS' # SQL Server name (or IP)
+    DatabaseName: 'Movies'
+    SqlFile: '$(System.DefaultWorkingDirectory)/path/to/your/sqlfile.sql'
+    SqlUsername: '$(sqlusername)' # Store this securely in Azure DevOps secrets
+    SqlPassword: '$(sqlpassword)' # Store this securely in Azure DevOps secrets

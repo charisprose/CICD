@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest' # Use Windows image for Docker compatibility
 
 jobs:
-- job: Run_tSQLt_Tests
+- job: Run_database_tests
   displayName: 'Run tSQLt Tests on SQL Server Docker Container'
   steps:
   - task: Docker@2
@@ -20,13 +20,15 @@ jobs:
 
   - script: |
       echo "Waiting for SQL Server to initialize..."
-      # Wait until SQL Server is ready to accept connections
       docker exec sql-server-container /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <PassWithFlyingColors> -Q "SELECT 1"
     displayName: 'Wait for SQL Server to Initialize'
-  - task: Docker@2
-    displayName: 'Install tSQLt Framework'
+    
+  - task: Powershell@2
+    displayName: 'Table exists'
     inputs:
-    command: 'exec'
+    targetType: 'inline'
+    script: |
+    $Query = "SELECT * from "
     container: 'sql-server-container'
     arguments: '/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <PassWithFlyingColors> -i /tmp/tSQLt-installation-script.sql'
 
@@ -45,9 +47,10 @@ jobs:
     arguments: '/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P <PassWithFlyingColors> -Q "SELECT * FROM tSQLt.Results"'
 
   - task: PublishTestResults@2
-    displayName: 'Publish tSQLt Test Results'
+    displayName: 'Publish SQL database Test Results'
     inputs:
     testResultsFiles: '**/tSQLtTestResults.xml'
-    testRunTitle: 'tSQLt Unit Tests'
+    testRunTitle: 'SQL database test results'
     testResultsFormat: 'JUnit'
     mergeTestResults: true
+
