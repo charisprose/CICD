@@ -17,8 +17,6 @@ steps:
       $secret ="Watermelon"
       $connectionString ="Server=$serverName;Database=$databaseName;User Id=$loginName;Password=$secret;Trusted_Connection=SSPI;Integrated Security=True;Encrypt=false;TrustServerCertificate=true"
       $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
-      Install-Module -Name SqlServer -Force -Scope CurrentUser -SkipPublisherCheck
-      Import-Module SqlServer
       try {
         Invoke-sqlcmd -Query $sqlScript -ConnectionString $connectionString 
         Write-Host "Successfully executed script: $scriptName"
