@@ -9,7 +9,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $serverName = "charis-legion-laptop-4E5SMTT2\SQLEXPRESS;initial catalog=master;user id=sa;password=<<YourPassword>>"
+      $serverName = "MSSQL$SQLEXPRESS;initial catalog=master;user id=sa;password=<<YourPassword>>"
       $databaseName = "Movies"
       $tableName = "characters"
       $schemaName = "dbo"
