@@ -9,13 +9,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $serverName = "localhost\SQLEXPRESS, 1433"
+      $serverAndInstance = "localhost\sqlexpress\SQLEXPRESS, 1433"
       $databaseName = "Movies"
       $tableName = "characters"
       $schemaName = "dbo"
       $loginName = "sa"
       $secret ="Watermelon"
-      $connectionString ="Server=$serverName;Database=$databaseName;User Id=$loginName;Password=$secret;Trusted_Connection=True;Integrated Security=True;Encrypt=false;TrustServerCertificate=True"
+      $connectionString ="Server=$serverAndInstance;Database=$databaseName;User Id=$loginName;Password=$secret"
       $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
       try {
         Invoke-sqlcmd -Query $sqlScript -ConnectionString $connectionString 
