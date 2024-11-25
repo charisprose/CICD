@@ -3,24 +3,9 @@ trigger:
 - main
 pool:
   vmImage: 'windows-latest'
-steps:
-- task: PowerShell@2
-  displayName: Set up database and schedule
-  inputs:
-    targetType: 'inline'
-    script: |
-      $serverAndInstance = "localhost\sqlexpress\SQLEXPRESS, 1433"
-      $databaseName = "Movies"
-      $tableName = "characters"
-      $schemaName = "dbo"
-      $loginName = "sa"
-      $secret ="Watermelon"
-      $connectionString ="Server=$serverAndInstance;Database=$databaseName;User Id=$loginName;Password=$secret"
-      $sqlScript="INSERT INTO $schemaName.$tableName(char_id, last_name, first_name) VALUES (4, 'Rabeus', 'Hadgrid');"
-      try {
-        Invoke-sqlcmd -Query $sqlScript -ConnectionString $connectionString 
-        Write-Host "Successfully executed script: $scriptName"
-      } catch {
-        Write-Error "Error executing script: $scriptName - $($_.Exception.Message)"
-      }
-      
+stages:
+- stage: PublishToAzureSQL
+  jobs:
+  - job: PublishToAzureSQLDevelopment
+    steps:
+    - checkout: none
