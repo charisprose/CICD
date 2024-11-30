@@ -9,3 +9,12 @@ stages:
   - job: PublishToAzureSQLDevelopment
     steps:
     - checkout: none
+    
+    - task: SqlAzureDacpacDeployment@1
+      displayName: 'Run SQL queries'
+      inputs:
+        azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
+        AuthenticationType: servicePrincipal
+        ServerName: 'cprose-sql-movies.database.windows.net'
+        DatabaseName: 'FirstDatabase'
+
