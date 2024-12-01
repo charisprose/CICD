@@ -20,8 +20,6 @@ stages:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
-          Write-Host $DB
-          Write-Host $(DB)
-          Write-Host $(DB_name)
-          Write-Host $env:MAPPED_DB
+          $result = Invoke-sqlcmd -ConnectionString "Data Source=$SQLserver;Initial Catalog=$DB;User Id=$DBLogin;Password=$DBPW" -Query "select * from dbo.characters"
+          Write-Host $result
         azurePowerShellVersion: LatestVersion
