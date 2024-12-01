@@ -21,6 +21,6 @@ stages:
         ScriptType: InlineScript
         Inline: |
           Write-Host $(DBLogin)
-          $result = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password=$(DBPW);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
-          Write-Host $result
+          $output = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password=$(DBPW);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+          $output = Out-File -FilePath /Users/charisprose/pipeline-output/output.txt
         azurePowerShellVersion: LatestVersion
