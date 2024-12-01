@@ -3,6 +3,11 @@ trigger:
 - main
 pool:
   vmImage: 'windows-latest'
+variables:
+  USER_SERVER: $(SQLserver)
+  USER_DB: $(DB)
+  USER_ID: $(DBLogin)
+  USER_PASS: $(DBPW)
 stages:
 - stage: PublishToAzureSQL
   jobs:
@@ -16,10 +21,10 @@ stages:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
-          $SQLserver = "cprose-sql-movies.database.windows.net"
-          $DB = "FirstDatabase"
-          $Login = ${env:DBLOGIN}
-          $PW = ${env:DBPW}
+          $SQLserver = $(USER_SERVER)
+          $DB = $(USER_DB)
+          $Login = $(USER_ID)
+          $PW = ${USER_PASS}
           $result = Invoke-sqlcmd -ConnectionString "Data Source=$SQLserver;Database=$DB;User Id=$Login;Password=$PW" -Query "select * from dbo.characters"
           Write-Host $result
         azurePowerShellVersion: LatestVersion
