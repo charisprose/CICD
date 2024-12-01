@@ -3,7 +3,8 @@ trigger:
 - main
 pool:
   vmImage: 'windows-latest'
-
+variables:
+  DB_name: $(DB)
 stages:
 - stage: PublishToAzureSQL
   jobs:
@@ -13,14 +14,14 @@ stages:
     
     - task: AzurePowerShell@5
       displayName: 'Run SQL queries'
+      env:
+        MAPPED_DB: $(DB)
       inputs:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
-          $SQLserver = $(SQLserver)
-          $DB = $(DB)
-          $Login = $(DBLogin)
-          $PW = $(DBPW)
-          $result = Invoke-sqlcmd -ConnectionString "Data Source=$SQLserver;Initial Catalog=$DB;User Id=$Login;Password=$PW" -Query "select * from dbo.characters"
-          Write-Host $result
+          Write-Host $DB
+          Write-Host $(DB)
+          Write-Host $(DB_name)
+          Write-Host $env:MAPPED_DB
         azurePowerShellVersion: LatestVersion
