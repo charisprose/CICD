@@ -20,6 +20,7 @@ stages:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
-          $result = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password=$DBPW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+          Write-Host $(DBLogin)
+          $result = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password=$(DBPW);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
           Write-Host $result
         azurePowerShellVersion: LatestVersion
