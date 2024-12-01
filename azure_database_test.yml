@@ -16,6 +16,8 @@ stages:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
-          $result = Invoke-sqlcmd -Query "select * from dbo.characters"
+          $SQLserver = "cprose-sql-movies.database.windows.net"
+          $DB = "FirstDatabase"
+          $result = Invoke-sqlcmd -ServerInstance $SQLserver -Database $DB -Query "select * from dbo.characters"
           Write-Host $result
         azurePowerShellVersion: LatestVersion
