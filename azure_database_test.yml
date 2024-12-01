@@ -24,7 +24,7 @@ stages:
           $SQLserver = $(USER_SERVER)
           $DB = $(USER_DB)
           $Login = $(USER_ID)
-          $PW = ${USER_PASS}
+          $PW = $(USER_PASS)
           $result = Invoke-sqlcmd -ConnectionString "Data Source=$SQLserver;Database=$DB;User Id=$Login;Password=$PW" -Query "select * from dbo.characters"
           Write-Host $result
         azurePowerShellVersion: LatestVersion
