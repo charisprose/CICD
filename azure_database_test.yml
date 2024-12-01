@@ -14,7 +14,7 @@ stages:
       displayName: 'Run SQL queries'
       inputs:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
-        ScriptType: FilePath
-        ScriptPath: 'WriteMetrics.ps1'
+        ScriptType: InlineScript
+        Inline: Write-Host "Hello World!"
         azurePowerShellVersion: LatestVersion
 
