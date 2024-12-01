@@ -15,6 +15,5 @@ stages:
       inputs:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
-        Inline: Write-Host "Hello World!"
-        azurePowerShellVersion: LatestVersion
-
+        Inline: |
+          Invoke-sqlcmd -Query "select * from dbo.characters" -verbose
