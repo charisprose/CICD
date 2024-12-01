@@ -18,7 +18,8 @@ stages:
         Inline: |
           $SQLserver = "cprose-sql-movies.database.windows.net"
           $DB = "FirstDatabase"
-          $tokenResponse = Get-AzAccessToken -ResourceUrl https://database.windows.net
-          $result = Invoke-sqlcmd -ConnectionString "server=$SQLserver;Database=$DB" -Query "select * from dbo.characters"
+          $Login = ${env:DBLOGIN}
+          $PW = ${env:DBPW}
+          $result = Invoke-sqlcmd -ConnectionString "Data Source=$SQLserver;Database=$DB;User Id=$Login;Password=$PW" -Query "select * from dbo.characters"
           Write-Host $result
         azurePowerShellVersion: LatestVersion
