@@ -16,11 +16,12 @@ stages:
       displayName: 'Run SQL queries'
       env:
         MAPPED_DB: $(DB)
+        MAPPED_PW: $(password)
       inputs:
         azureSubscription: 'Connect Azure SQL DB with Azure DevOps' 
         ScriptType: InlineScript
         Inline: |
           Write-Host $(DBLogin)
-          $output = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password=${password:password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+          $output = Invoke-sqlcmd -ConnectionString "Server=tcp:cprose-sql-movies.database.windows.net,1433;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
           $output | Out-File -FilePath .\output.txt
         azurePowerShellVersion: LatestVersion
