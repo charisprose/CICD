@@ -24,8 +24,12 @@ stages:
         Inline: |
           Write-Host $(DBLogin)
           $output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
-          $output | Out-File -FilePath .\output.txt
+          $output | Out-File $env:BUILD_SOURCESDIRECTORY/output.txt
         azurePowerShellVersion: LatestVersion
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
