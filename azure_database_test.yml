@@ -26,3 +26,7 @@ stages:
           $output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
           $output | Out-File -FilePath .\output.txt
         azurePowerShellVersion: LatestVersion
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: buildresult
