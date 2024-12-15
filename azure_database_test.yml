@@ -4,7 +4,7 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 variables:
-  DB_name: $(DB)
+  DB_name: $(DBName)
 stages:
 - stage: PublishToAzureSQL
   jobs:
@@ -23,6 +23,6 @@ stages:
         ScriptType: InlineScript
         Inline: |
           Write-Host $(DBLogin)
-          $output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+          $output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
           $output | Out-File -FilePath .\output.txt
         azurePowerShellVersion: LatestVersion
