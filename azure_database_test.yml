@@ -10,7 +10,8 @@ stages:
   jobs:
   - job: PublishToAzureSQLDevelopment
     steps:
-    - checkout: none
+    - checkout: self
+      persistCredentials: true
     
     - task: AzurePowerShell@5
       displayName: 'Run SQL queries'
