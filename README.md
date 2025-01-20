@@ -1,5 +1,5 @@
 # Set up to run SQL tests
-- Setup SQL server in docker container
-- install tSQLt framework inside the container
-- Run tSQLt tests inside the container
-- Publish the test results in Azure DevOps
+- Connect to Azure SQL database by connection string
+- Run an inline query and save output to a file 
+- Run a git command to get data from the last git merge and save output to a file 
+- Copy and publish artifacts in Azure DevOps
