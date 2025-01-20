@@ -15,12 +15,17 @@ stages:
     
 
     - task: PowerShell@2
+      displayName: 'Run SQL queries'
+      env:
+        MAPPED_DBLogin: $(DBLogin)
+        MAPPED_DBServer: $(DBServer)
+        MAPPED_PW: $(password)
       inputs:
         targetType: 'inline'
         script: |
          Write-Host "Query from the Azure SQL"
          Write-Host $(DBLogin)
-         $query_output = Invoke-sqlcmd -ConnectionString "Server=cprose-sql-movies;Initial Catalog=FirstDatabase;Persist Security Info=False;User ID=CloudSAdeb1ce11;Password= UnlockDatabase@135#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+         $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
          $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
          $git_merge_output = git log -m --name-only -n 1
          $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
