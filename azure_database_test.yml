@@ -33,7 +33,9 @@ stages:
     - task: CopyFiles@2
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)'
+        Contents: '*.txt'
         targetFolder: '$(Build.ArtifactStagingDirectory)'
+        flattenFolders: true
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
