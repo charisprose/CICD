@@ -23,8 +23,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-         Write-Host "Query from the Azure SQL"
-         Write-Host $(DBLogin)
+         Write-Host "PS Task: Query from the Azure SQL"
+         Write-Host "Database Name: $(DBName)
          $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
          $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
          $git_merge_output = git log -m --name-only -n 1
