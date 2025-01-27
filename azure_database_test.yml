@@ -23,6 +23,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+         git checkout main
+         git pull
          Write-Host "PS Task: Query from the Azure SQL"
          Write-Host "Database Name:" $(DB_Name)
          $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
