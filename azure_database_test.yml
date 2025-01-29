@@ -13,7 +13,10 @@ stages:
     - checkout: self
       persistCredentials: true
     
-
+    - task: PowerShell@2
+      displayName: 'read file from local storage'
+      inputs:
+        filePath: './users/charisprose/read_file_from_local.ps1'
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
