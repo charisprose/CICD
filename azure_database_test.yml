@@ -21,7 +21,7 @@ stages:
       displayName: 'read file from azure repo'
       inputs:
         script: |
-         ./$env:BUILD_SOURCESDIRECTORY/test.ps1
+         ./$(Build.SourcesDirectory)/test.ps1
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
