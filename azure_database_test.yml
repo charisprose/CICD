@@ -21,8 +21,9 @@ stages:
     - task: PowerShell@2
       displayName: 'read file from azure repo'
       inputs:
+        targetType: 'inline'
         script: |
-         ./test.ps1
+         'Get-Content -Path $(Build.SourcesDirectory)\readme.md'
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
