@@ -16,7 +16,7 @@ stages:
       displayName: 'read file from local storage'
       inputs:
         script: |
-         ./$(System.DefaultWorkingDirectory)/read_file_from_local.ps1
+         ./$(Build.SourcesDirectory)/read_file_from_local.ps1
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
