@@ -11,45 +11,47 @@ resources:
     name: Database Tests
     type: git
     ref: main
-stages:
-- stage: PublishToAzureSQL
-  jobs:
-  - job: PublishToAzureSQLDevelopment
-    steps:
-    - checkout: self
-      persistCredentials: true
-    - task: PowerShell@2
-      displayName: 'read file from azure repo'
-      inputs:
-        targetType: 'inline'
-        script: |
-         './$(Build.SourcesDirectory)\test.ps1'
-    - task: PowerShell@2
-      displayName: 'Run SQL queries and git command'
-      env:
-        MAPPED_DBLogin: $(DBLogin)
-        MAPPED_DBServer: $(DBServer)
-        MAPPED_PW: $(password)
-      inputs:
-        targetType: 'inline'
-        script: |
-         git checkout main
-         git pull
-         Write-Host "PS Task: Query from the Azure SQL"
-         Write-Host "Database Name:" $(DB_Name)
-         $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
-         $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
-         $git_merge_output = git log -m --name-only -n 1
-         $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
 
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)'
-        Contents: '*.txt'
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
-        flattenFolders: true
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: buildresult
+jobs:
+- job: Job_1
+  steps:
+  - checkout: self
+    persistCredentials: true
+  
+  - task: PowerShell@2
+    displayName: 'Read file from azure repo'
+    inputs:
+      targetType: 'inline'
+      script: |
+        $output = Get-Content -Path $(Build.SourcesDirectory)\readme.md
+        Write-Host $output
+  - task: PowerShell@2
+    inputs:
+      filePath: './"$(Build.SourcesDirectory)\test.ps1"'
+  - task: PowerShell@2
+    displayName: 'Run SQL queries and git command'
+    env:
+      MAPPED_DBLogin: $(DBLogin)
+      MAPPED_DBServer: $(DBServer)
+      MAPPED_PW: $(password)
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "PS Task: Query from the Azure SQL"
+        Write-Host "Database Name:" $(DB_Name)
+        $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
+        $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
+        $git_merge_output = git log -m --name-only -n 1
+        $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      Contents: '*.txt'
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: buildresult
     
