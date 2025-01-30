@@ -12,12 +12,17 @@ stages:
     steps:
     - checkout: self
       persistCredentials: true
-    
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '/Users/charisprose/database_tests/DatabaseTests'
+        Contents: '*.ps1'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        flattenFolders: true
     - task: PowerShell@2
       displayName: 'read file from local storage'
       inputs:
         script: |
-         ./$(System.defaultWorkingDirectory)/read_file_from_local.ps1
+         ./$(Build.ArtifactStagingDirectory)/read_file_from_local.ps1
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
