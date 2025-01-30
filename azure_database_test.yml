@@ -5,6 +5,8 @@ pool:
   vmImage: 'windows-latest'
 variables:
   DB_name: $(DBName)
+
+# Connect to Azure repo 
 resources:
   repositories:
   - repository: Database Tests
@@ -17,9 +19,15 @@ jobs:
   steps:
   - checkout: self
     persistCredentials: true
-  
   - task: PowerShell@2
-    displayName: 'Read file from azure repo'
+    displayName: Run a git command and save output to a file on pipeline
+    inputs:
+      targetType: 'inline'
+      script: |
+       $git_merge_output = git log -m --name-only -n 1
+       $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
+  - task: PowerShell@2
+    displayName: 'Read a file from azure repo'
     inputs:
       targetType: 'inline'
       script: |
@@ -30,9 +38,9 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-         ./$(Build.SourcesDirectory)\test.ps1
+         './$(Build.SourcesDirectory)\test.ps1'
   - task: PowerShell@2
-    displayName: 'Run SQL queries and git command'
+    displayName: 'Run SQL queries'
     env:
       MAPPED_DBLogin: $(DBLogin)
       MAPPED_DBServer: $(DBServer)
@@ -44,9 +52,6 @@ jobs:
         Write-Host "Database Name:" $(DB_Name)
         $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
         $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
-        $git_merge_output = git log -m --name-only -n 1
-        $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
-
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
