@@ -13,7 +13,7 @@ stages:
     - checkout: self
       persistCredentials: true
     - task: PowerShell@2
-      displayName: 'read file from local storage'
+      displayName: 'read file from azure repo'
       inputs:
         script: |
          ./$(Build.SourcesDirectory)/read_file_from_local.ps1
