@@ -16,7 +16,7 @@ stages:
       displayName: 'read file from azure repo'
       inputs:
         script: |
-         ./test.ps1
+         ./https://dev.azure.com/charisprose/_git/Database Tests/test.ps1
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
