@@ -7,9 +7,10 @@ variables:
   DB_name: $(DBName)
 resources:
   repositories:
-  - repository: self
+  - repository: Database Tests
+    name: Database Tests
     type: git
-    ref: refs/heads/base
+    ref: main
 stages:
 - stage: PublishToAzureSQL
   jobs:
@@ -21,7 +22,7 @@ stages:
       displayName: 'read file from azure repo'
       inputs:
         script: |
-         ./$(Build.SourcesDirectory)/test.ps1
+         ./test.ps1
     - task: PowerShell@2
       displayName: 'Run SQL queries'
       env:
