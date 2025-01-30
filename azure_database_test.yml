@@ -16,6 +16,7 @@ resources:
 
 jobs:
 - job: Job_1
+# Retrieve source code from current repo (for git)
   steps:
   - checkout: self
     persistCredentials: true
