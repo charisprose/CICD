@@ -5,6 +5,11 @@ pool:
   vmImage: 'windows-latest'
 variables:
   DB_name: $(DBName)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/base
 stages:
 - stage: PublishToAzureSQL
   jobs:
