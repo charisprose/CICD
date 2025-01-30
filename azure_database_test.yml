@@ -26,8 +26,11 @@ jobs:
         $output = Get-Content -Path $(Build.SourcesDirectory)\readme.md
         Write-Host $output
   - task: PowerShell@2
+    displayName: 'Run a PS command'
     inputs:
-      filePath: './"$(Build.SourcesDirectory)\test.ps1"'
+      targetType: 'inline'
+      script: |
+         ./$(Build.SourcesDirectory)\test.ps1
   - task: PowerShell@2
     displayName: 'Run SQL queries and git command'
     env:
