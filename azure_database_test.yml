@@ -39,7 +39,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-         './$(Build.SourcesDirectory)\test.ps1 -name "Hermione" '
+         ./$(Build.SourcesDirectory)\test.ps1 -name "Hermione" 
 
   - task: PowerShell@2
     displayName: 'Run SQL queries'
