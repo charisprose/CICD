@@ -1,4 +1,4 @@
-# File: azure-pipelines.yml
+# File: azure-pipelines.yml on github
 trigger:
 - main
 pool:
