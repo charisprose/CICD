@@ -39,7 +39,11 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-         './$(Build.SourcesDirectory)\test.ps1'
+         '.\$(Build.SourcesDirectory)\test.ps1'
+  - task: PowerShell@2
+    displayName:  'Run a PS command by task'
+    inputs:
+      filePath: '$(Build.SourcesDirectory)\test.ps1'
   - task: PowerShell@2
     displayName: 'Run SQL queries'
     env:
