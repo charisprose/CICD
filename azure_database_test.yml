@@ -39,11 +39,12 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-         '.\$(Build.SourcesDirectory)\test.ps1'
+         './$(Build.SourcesDirectory)\test.ps1'
   - task: PowerShell@2
     displayName:  'Run a PS command by task'
     inputs:
-      filePath: '$(Build.SourcesDirectory)\test.ps1'
+      filePath: '.\$(Build.SourcesDirectory)\test.ps1'
+      arguments: '-name "Hermione" '
   - task: PowerShell@2
     displayName: 'Run SQL queries'
     env:
@@ -64,8 +65,4 @@ jobs:
       Contents: '*.txt'
       targetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: buildresult
     
