@@ -27,6 +27,8 @@ jobs:
       script: |
        $git_merge_output = git log -m --name-only -n 1
        $git_merge_output | Out-File $env:BUILD_SOURCESDIRECTORY/git_merge_output.txt
+  # check out specific repo
+  - checkout: Database Tests
   - task: PowerShell@2
     displayName: 'Read a file from azure repo'
     inputs:
