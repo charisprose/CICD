@@ -34,27 +34,11 @@ jobs:
       script: |
         $output = Get-Content -Path $(Build.SourcesDirectory)\readme.md
         Write-Host $output
-  - task: PowerShell@2
-    displayName: 'Run a PS command'
-    inputs:
-      targetType: 'inline'
-      script: |
-         ./$(Build.SourcesDirectory)\test.ps1 -name "Hermione" 
 
-  - task: PowerShell@2
-    displayName: 'Run SQL queries'
-    env:
-      MAPPED_DBLogin: $(DBLogin)
-      MAPPED_DBServer: $(DBServer)
-      MAPPED_PW: $(password)
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "PS Task: Query from the Azure SQL"
-        Write-Host "Database Name:" $(DB_Name)
-        try{ Import-Module SqlServer} catch {Write-host "SqlServer module is already installed!"}
-        $query_output = Invoke-sqlcmd -ConnectionString "Server=$env:MAPPED_DBServer;Initial Catalog=$env:DB_name;Persist Security Info=False;User ID=$env:MAPPED_DBLogin;Password= $env:MAPPED_PW;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" -Query "select * from dbo.characters"
-        $query_output | Out-File $env:BUILD_SOURCESDIRECTORY/query_output.txt
+  - pwsh: |
+      ./$(Build.SourcesDirectory)\test.ps1 -name "Hermione" 
+
+
   - task: CopyFiles@2
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
